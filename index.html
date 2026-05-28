@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de vCard QR</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-qrcode"></i> Generador de vCard QR</h1>
+            <p>Crea tu tarjeta de contacto digital con código QR</p>
+        </header>
+
+        <main class="main-content">
+            <form id="vcard-form" class="vcard-form">
+                <div class="form-section">
+                    <h2><i class="fas fa-user"></i> Información Personal</h2>
+                    
+                    <div class="form-group">
+                        <label for="firstName">Nombre *</label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="Juan">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Apellido *</label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Título / Cargo</label>
+                        <input type="text" id="title" name="title" placeholder="Gerente de Ventas">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Empresa</label>
+                        <input type="text" id="company" name="company" placeholder="Mi Empresa S.A.">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2><i class="fas fa-phone"></i> Contacto</h2>
+                    
+                    <div class="form-group">
+                        <label for="phone">Teléfono Celular *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+52 664 123 4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workPhone">Teléfono de Trabajo</label>
+                        <input type="tel" id="workPhone" name="workPhone" placeholder="+52 664 987 6543">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico *</label>
+                        <input type="email" id="email" name="email" required placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="website">Sitio Web</label>
+                        <input type="url" id="website" name="website" placeholder="https://www.ejemplo.com">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2><i class="fas fa-map-marker-alt"></i> Dirección</h2>
+                    
+                    <div class="form-group">
+                        <label for="street">Calle y Número</label>
+                        <input type="text" id="street" name="street" placeholder="Av. Principal #123">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">Ciudad</label>
+                        <input type="text" id="city" name="city" placeholder="Tijuana">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">Estado</label>
+                        <input type="text" id="state" name="state" placeholder="Baja California">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postalCode">Código Postal</label>
+                        <input type="text" id="postalCode" name="postalCode" placeholder="22000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">País</label>
+                        <input type="text" id="country" name="country" placeholder="México">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2><i class="fas fa-share-alt"></i> Redes Sociales</h2>
+                    
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn</label>
+                        <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/usuario">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="facebook">Facebook</label>
+                        <input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/usuario">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="instagram">Instagram</label>
+                        <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/usuario">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="twitter">Twitter / X</label>
+                        <input type="url" id="twitter" name="twitter" placeholder="https://twitter.com/usuario">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-generate">
+                    <i class="fas fa-qrcode"></i> Generar Código QR
+                </button>
+            </form>
+
+            <!-- Modal para mostrar el QR generado -->
+            <div id="qr-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>¡Tu código QR está listo!</h2>
+                    <div id="qr-code"></div>
+                    <p class="qr-instructions">Escanea este código QR para ver tu tarjeta de contacto</p>
+                    <div class="modal-buttons">
+                        <a id="download-qr" class="btn-download" download="mi-vcard-qr.png">
+                            <i class="fas fa-download"></i> Descargar QR
+                        </a>
+                        <a id="view-contact" class="btn-view" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ver Página de Contacto
+                        </a>
+                    </div>
+                    <div class="share-link">
+                        <label>Enlace de tu contacto:</label>
+                        <div class="link-copy">
+                            <input type="text" id="contact-link" readonly>
+                            <button type="button" id="copy-link" class="btn-copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

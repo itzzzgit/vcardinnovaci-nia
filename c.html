@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="contact-page">
+    <div class="contact-container">
+        <div id="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+        <div id="error-state" class="error-state" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <h2>No encontrado</h2>
+            <a href="index.html" class="btn-create">Crear vCard</a>
+        </div>
+        <div id="contact-card" class="contact-card" style="display: none;">
+            <div class="card-header">
+                <div class="profile-avatar" id="profile-avatar"><i class="fas fa-user"></i></div>
+                <h1 id="contact-name"></h1>
+                <p id="contact-title" class="contact-title"></p>
+                <p id="contact-company" class="contact-company"></p>
+            </div>
+            <div class="quick-actions">
+                <a href="#" id="action-call" class="action-btn"><i class="fas fa-phone"></i></a>
+                <a href="#" id="action-email" class="action-btn"><i class="fas fa-envelope"></i></a>
+                <a href="#" id="action-whatsapp" class="action-btn whatsapp" style="display:none;"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <div class="add-contact-btn">
+                <a href="#" id="download-vcard" class="btn-add-contact"><i class="fas fa-user-plus"></i> Añadir contacto</a>
+            </div>
+            <div class="contact-details">
+                <div id="phone-section" class="detail-section">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="detail-content">
+                            <span class="detail-label">Teléfono</span>
+                            <a href="#" id="detail-phone" class="detail-value"></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="work-phone-section" class="detail-section" style="display:none;">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-phone"></i></div>
+                        <div class="detail-content">
+                            <span class="detail-label">Trabajo</span>
+                            <a href="#" id="detail-work-phone" class="detail-value"></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="email-section" class="detail-section">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="detail-content">
+                            <span class="detail-label">Email</span>
+                            <a href="#" id="detail-email" class="detail-value"></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="website-section" class="detail-section" style="display:none;">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-globe"></i></div>
+                        <div class="detail-content">
+                            <span class="detail-label">Web</span>
+                            <a href="#" id="detail-website" class="detail-value" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="address-section" class="detail-section" style="display:none;">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="detail-content">
+                            <span class="detail-label">Dirección</span>
+                            <span id="detail-address" class="detail-value"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="social-section" class="social-section" style="display:none;">
+                    <h3>Redes Sociales</h3>
+                    <div class="social-links">
+                        <a href="#" id="social-linkedin" class="social-link linkedin" style="display:none;" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" id="social-facebook" class="social-link facebook" style="display:none;" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="#" id="social-instagram" class="social-link instagram" style="display:none;" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#" id="social-twitter" class="social-link twitter" style="display:none;" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const id = new URLSearchParams(window.location.search).get('i');
+        if (!id) return showError();
+        
+        try {
+            const { data: c, error } = await window.supabaseClient.from('vcards').select('*').eq('short_id', id).single();
+            if (error || !c) return showError();
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('contact-card').style.display = 'block';
+            document.title = `${c.first_name} ${c.last_name}`;
+            document.getElementById('contact-name').textContent = `${c.first_name} ${c.last_name}`;
+            document.getElementById('profile-avatar').innerHTML = `<span style="font-size:24px;font-weight:bold;color:#333;">${c.first_name[0]}${c.last_name[0]}</span>`;
+            if (c.title) document.getElementById('contact-title').textContent = c.title;
+            if (c.company) document.getElementById('contact-company').textContent = c.company;
+            
+            const phone = c.phone.replace(/\D/g, '');
+            document.getElementById('action-call').href = `tel:${c.phone}`;
+            document.getElementById('action-email').href = `mailto:${c.email}`;
+            if (c.phone) { document.getElementById('action-whatsapp').style.display = 'flex'; document.getElementById('action-whatsapp').href = `https://wa.me/${phone}`; }
+            
+            document.getElementById('detail-phone').textContent = c.phone;
+            document.getElementById('detail-phone').href = `tel:${c.phone}`;
+            document.getElementById('detail-email').textContent = c.email;
+            document.getElementById('detail-email').href = `mailto:${c.email}`;
+            
+            if (c.work_phone) { document.getElementById('work-phone-section').style.display = 'block'; document.getElementById('detail-work-phone').textContent = c.work_phone; document.getElementById('detail-work-phone').href = `tel:${c.work_phone}`; }
+            if (c.website) { document.getElementById('website-section').style.display = 'block'; document.getElementById('detail-website').textContent = c.website.replace(/^https?:\/\//, ''); document.getElementById('detail-website').href = c.website; }
+            
+            const addr = [c.street, c.city, c.state, c.postal_code, c.country].filter(Boolean);
+            if (addr.length) { document.getElementById('address-section').style.display = 'block'; document.getElementById('detail-address').textContent = addr.join(', '); }
+            
+            let social = false;
+            if (c.linkedin) { document.getElementById('social-linkedin').style.display = 'flex'; document.getElementById('social-linkedin').href = c.linkedin; social = true; }
+            if (c.facebook) { document.getElementById('social-facebook').style.display = 'flex'; document.getElementById('social-facebook').href = c.facebook; social = true; }
+            if (c.instagram) { document.getElementById('social-instagram').style.display = 'flex'; document.getElementById('social-instagram').href = c.instagram; social = true; }
+            if (c.twitter) { document.getElementById('social-twitter').style.display = 'flex'; document.getElementById('social-twitter').href = c.twitter; social = true; }
+            if (social) document.getElementById('social-section').style.display = 'block';
+            
+            document.getElementById('download-vcard').addEventListener('click', function(e) {
+                e.preventDefault();
+                let v = `BEGIN:VCARD\nVERSION:3.0\nN:${c.last_name};${c.first_name};;;\nFN:${c.first_name} ${c.last_name}\n`;
+                if (c.title) v += `TITLE:${c.title}\n`;
+                if (c.company) v += `ORG:${c.company}\n`;
+                if (c.phone) v += `TEL;TYPE=CELL:${c.phone}\n`;
+                if (c.work_phone) v += `TEL;TYPE=WORK:${c.work_phone}\n`;
+                if (c.email) v += `EMAIL:${c.email}\n`;
+                if (c.website) v += `URL:${c.website}\n`;
+                if (addr.length) v += `ADR;TYPE=WORK:;;${c.street||''};${c.city||''};${c.state||''};${c.postal_code||''};${c.country||''}\n`;
+                v += 'END:VCARD';
+                const blob = new Blob([v], { type: 'text/vcard' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `${c.first_name}_${c.last_name}.vcf`;
+                a.click();
+            });
+        } catch (e) { showError(); }
+        
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+        }
+    });
+    </script>
+</body>
+</html>

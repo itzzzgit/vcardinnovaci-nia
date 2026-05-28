@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - vCard</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="contact-page">
+    <div class="contact-container">
+        <!-- Loading State -->
+        <div id="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Cargando información de contacto...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="error-state" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <h2>Contacto no encontrado</h2>
+            <p>El contacto que buscas no existe o el enlace es inválido.</p>
+            <a href="index.html" class="btn-create">Crear mi vCard</a>
+        </div>
+
+        <!-- Contact Card -->
+        <div id="contact-card" class="contact-card" style="display: none;">
+            <div class="card-header">
+                <div class="profile-avatar" id="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h1 id="contact-name">Nombre Completo</h1>
+                <p id="contact-title" class="contact-title"></p>
+                <p id="contact-company" class="contact-company"></p>
+            </div>
+
+            <div class="quick-actions">
+                <a href="#" id="action-call" class="action-btn" title="Llamar">
+                    <i class="fas fa-phone"></i>
+                </a>
+                <a href="#" id="action-email" class="action-btn" title="Enviar Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" id="action-whatsapp" class="action-btn whatsapp" title="WhatsApp" style="display: none;">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+
+            <div class="add-contact-btn">
+                <a href="#" id="download-vcard" class="btn-add-contact">
+                    <i class="fas fa-user-plus"></i> Añadir contacto
+                </a>
+            </div>
+
+            <div class="contact-details">
+                <!-- Phone Section -->
+                <div id="phone-section" class="detail-section">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Cellphone</span>
+                            <a href="#" id="detail-phone" class="detail-value"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Phone Section -->
+                <div id="work-phone-section" class="detail-section" style="display: none;">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-phone-office"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Work Phone</span>
+                            <a href="#" id="detail-work-phone" class="detail-value"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Section -->
+                <div id="email-section" class="detail-section">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Email</span>
+                            <a href="#" id="detail-email" class="detail-value"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Website Section -->
+                <div id="website-section" class="detail-section" style="display: none;">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Website</span>
+                            <a href="#" id="detail-website" class="detail-value" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Section -->
+                <div id="address-section" class="detail-section" style="display: none;">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="detail-content">
+                            <span class="detail-label">Address</span>
+                            <span id="detail-address" class="detail-value"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Section -->
+                <div id="social-section" class="social-section" style="display: none;">
+                    <h3>Redes Sociales</h3>
+                    <div class="social-links">
+                        <a href="#" id="social-linkedin" class="social-link linkedin" style="display: none;" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" id="social-facebook" class="social-link facebook" style="display: none;" target="_blank">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" id="social-instagram" class="social-link instagram" style="display: none;" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" id="social-twitter" class="social-link twitter" style="display: none;" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/contact.js"></script>
+</body>
+</html>
